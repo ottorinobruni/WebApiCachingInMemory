@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "tGfnMcAfLqgCnQjVRqv+c7aWHDP79PsqXtbjB3W/GA8=",
+  "Source": "WebApiCachingInMemory",
+  "BasePath": "_content/WebApiCachingInMemory",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
