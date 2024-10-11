@@ -1,7 +1,11 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMemoryCache();  // Register IMemoryCache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "localhost:6379";  // Redis connection string (from Docker)
+    options.InstanceName = "SampleInstance";   // Optional: name of Redis instance
+});
 builder.Services.AddScoped<IUserService, UserService>();  // Register UserService
 
 // Add services to the container.

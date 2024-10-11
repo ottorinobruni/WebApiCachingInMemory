@@ -70,3 +70,4 @@
 /Users/ottorinobruni/Documents/Work/DotNet/WebApiCachingInMemory/WebApiCachingInMemory/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /Users/ottorinobruni/Documents/Work/DotNet/WebApiCachingInMemory/WebApiCachingInMemory/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
 /Users/ottorinobruni/Documents/Work/DotNet/WebApiCachingInMemory/WebApiCachingInMemory/bin/Debug/net8.0/StackExchange.Redis.dll
+/Users/ottorinobruni/Documents/Work/DotNet/WebApiCachingInMemory/WebApiCachingInMemory/obj/Debug/net8.0/WebApiCachingInMemory.sourcelink.json

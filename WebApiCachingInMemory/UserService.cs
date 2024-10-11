@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 
 public interface IUserService
@@ -7,24 +9,31 @@ public interface IUserService
 
 public class UserService : IUserService
 {
-    private readonly IMemoryCache _memoryCache;
+    private readonly IDistributedCache _distributedCache;
     private const string cacheKey = "users";
 
-    public UserService(IMemoryCache memoryCache)
+    public UserService(IDistributedCache distributedCache)
     {
-        this._memoryCache = memoryCache;
+        this._distributedCache = distributedCache;
     }
     
     public async Task<List<User>> GetUsers()
     {
-        if (!_memoryCache.TryGetValue(cacheKey, out List<User> users))
-        {
-            users = await GetValuesFromDbAsync();
+        var cachedUsers = await _distributedCache.GetStringAsync(cacheKey);
 
-            _memoryCache.Set(cacheKey, users, 
-                    new MemoryCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(60)));
+        if (cachedUsers != null)
+        {
+            return JsonSerializer.Deserialize<List<User>>(cachedUsers);
         }
+
+        var users = await GetValuesFromDbAsync();
+
+        var serializedUsers = JsonSerializer.Serialize(users);
+
+        var cacheOptions = new DistributedCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
+
+        await _distributedCache.SetStringAsync(cacheKey, serializedUsers, cacheOptions);
 
         return users;
     }
