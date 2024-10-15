@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebApiCachingInMemory")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b4fb3b006fd2d6429e9e0c781c0164804f015bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebApiCachingInMemory")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebApiCachingInMemory")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
