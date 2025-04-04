@@ -1,6 +1,4 @@
-using System.Text.Json;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Hybrid;
 
 public interface IUserService
 {
@@ -9,32 +7,24 @@ public interface IUserService
 
 public class UserService : IUserService
 {
-    private readonly IDistributedCache _distributedCache;
+    private readonly HybridCache _hybridCache;
     private const string cacheKey = "users";
 
-    public UserService(IDistributedCache distributedCache)
+    public UserService(HybridCache hybridCache)
     {
-        this._distributedCache = distributedCache;
+        this._hybridCache = hybridCache;
     }
     
-    public async Task<List<User>> GetUsers()
+     public async Task<List<User>> GetUsers()
     {
-        var cachedUsers = await _distributedCache.GetStringAsync(cacheKey);
+        Console.WriteLine("GetUsers method called.");
+        var users = await _hybridCache.GetOrCreateAsync(cacheKey, 
+            async _ => {
+                Console.WriteLine("Cache miss. Fetching data from the database.");
+                return await GetValuesFromDbAsync();
+            });
 
-        if (cachedUsers != null)
-        {
-            return JsonSerializer.Deserialize<List<User>>(cachedUsers);
-        }
-
-        var users = await GetValuesFromDbAsync();
-
-        var serializedUsers = JsonSerializer.Serialize(users);
-
-        var cacheOptions = new DistributedCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
-
-        await _distributedCache.SetStringAsync(cacheKey, serializedUsers, cacheOptions);
-
+        Console.WriteLine("Data retrieved from the cache.");
         return users;
     }
 

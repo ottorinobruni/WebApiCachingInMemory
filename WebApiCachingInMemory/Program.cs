@@ -1,11 +1,23 @@
+using Microsoft.Extensions.Caching.Hybrid;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add HybridCache with Redis as distributed cache
+builder.Services.AddHybridCache(options =>
+{
+    options.DefaultEntryOptions = new HybridCacheEntryOptions
+        {
+            Expiration = TimeSpan.FromMinutes(2),
+            LocalCacheExpiration = TimeSpan.FromMinutes(1)
+        };
+});
+
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "localhost:6379";  // Redis connection string (from Docker)
-    options.InstanceName = "SampleInstance";   // Optional: name of Redis instance
+    options.Configuration = "localhost:6379";
+    options.InstanceName = "my-redis";
 });
+
 builder.Services.AddScoped<IUserService, UserService>();  // Register UserService
 
 // Add services to the container.
@@ -22,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.MapGet("/users", async (IUserService userService) =>
 {
