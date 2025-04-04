@@ -20,11 +20,11 @@ public class UserService : IUserService
         Console.WriteLine("GetUsers method called.");
         var users = await _hybridCache.GetOrCreateAsync(cacheKey, 
             async _ => {
-                Console.WriteLine("Cache miss. Fetching data from the database.");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Cache miss. Fetching data from the database.");
                 return await GetValuesFromDbAsync();
             });
 
-        Console.WriteLine("Data retrieved from the cache.");
+        Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Data retrieved from the cache.");
         return users;
     }
 
